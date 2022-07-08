@@ -9,4 +9,7 @@ router.get('/', controller.getUsers);
 //Need: Authentication and Manager Role
 router.get('/:id', controller.getUserById);
 
+//Need: Authentication and Manager Role
+router.post('/', controller.addUser);
+
 module.exports = router;
