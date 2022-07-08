@@ -2,6 +2,42 @@ const pool = require('../../db');
 const queries = require('./queries');
 const bcrypt = require('bcrypt');
 
+const userLogin = (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    res.status(400).send('Missing metadata.');
+    return;
+  }
+
+  pool.query(queries.checkUsernameExists, [username], (error, results) => {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+      return;
+    }
+
+    if (!results.rows.length) {
+      res.status(400).send('The username does not exits.');
+      return;
+    }
+
+    bcrypt.compare(password, results.rows[0].password, (error, result) => {
+      if (error) {
+        console.log(error);
+        res.sendStatus(500);
+        return;
+      }
+      if (result) {
+        //Create JWT and send to user.
+        res.status(200).send('Succesfully logged in.');
+      } else {
+        res.status(400).send('The password is not correct.');
+      }
+    });
+  });
+};
+
 const getUsers = (req, res) => {
   pool.query(queries.getUsers, (error, results) => {
     if (error) {
@@ -66,4 +102,4 @@ const addUser = (req, res) => {
   });
 };
 
-module.exports = { getUsers, getUserById, addUser };
+module.exports = { userLogin, getUsers, getUserById, addUser };
