@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const userRoutes = require('./src/users/routes');
-const controller = require('./src/users/controller');
+const authController = require('./src/auth/controller');
 
 const app = express();
 const port = 3000;
@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to Renault Case Study Api.');
 });
 
-app.post('/login', controller.userLogin);
+app.post('/login', authController.userLogin);
 
 app.use('/users', userRoutes);
 
