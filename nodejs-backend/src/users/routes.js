@@ -4,7 +4,7 @@ const controller = require('./controller');
 const router = Router();
 
 //Need: Authentication
-router.get('/', controller.getUsers);
+router.get('/', controller.authenticateToken, controller.getUsers);
 
 //Need: Authentication and Manager Role
 router.get('/:id', controller.getUserById);
