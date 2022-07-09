@@ -78,6 +78,11 @@ const getUserById = (req, res) => {
       console.log(error);
       return res.sendStatus(500);
     }
+
+    if (results.rowCount == 0) {
+      return res.status(404).send("The user id couldn't find.");
+    }
+
     res.status(200).json(results.rows);
   });
 };
@@ -118,10 +123,72 @@ const addUser = (req, res) => {
   });
 };
 
+const updateUser = (req, res) => {
+  const id = parseInt(req.params.id);
+  let { username, name, role_id } = req.body;
+
+  if (!username && !name && !role_id) {
+    return res.status(400).send('Missing metadata.');
+  }
+
+  pool.query(queries.getUserById, [id], (error, results) => {
+    if (error) {
+      console.log(error);
+      return res.sendStatus(500);
+    }
+
+    if (results.rowCount == 0) {
+      return res.status(404).send("The user id couldn't find.");
+    }
+
+    const theUser = results.rows[0];
+
+    username = username ? username : theUser.username;
+    name = name ? name : theUser.name;
+    role_id = role_id ? role_id : theUser.role_id;
+
+    pool.query(
+      queries.updateUser,
+      [id, username, name, role_id],
+      (error, result) => {
+        if (error) {
+          console.log(error);
+          return res.sendStatus(500);
+        }
+        res.sendStatus(200);
+      }
+    );
+  });
+};
+
+const deleteUser = (req, res) => {
+  const id = parseInt(req.params.id);
+  pool.query(queries.getUserById, [id], (error, results) => {
+    if (error) {
+      console.log(error);
+      return res.sendStatus(500);
+    }
+
+    if (results.rowCount == 0) {
+      return res.status(404).send("The user id couldn't find.");
+    }
+
+    pool.query(queries.deleteUser, [id], (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.sendStatus(500);
+      }
+      res.sendStatus(200);
+    });
+  });
+};
+
 module.exports = {
   userLogin,
   authenticateToken,
   getUsers,
   getUserById,
   addUser,
+  updateUser,
+  deleteUser,
 };
