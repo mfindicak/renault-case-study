@@ -14,6 +14,8 @@ app.get('/', (req, res) => {
 
 app.post('/login', authController.userLogin);
 
+app.post('/refresh', authController.refresh);
+
 app.use('/users', userRoutes);
 
 app.listen(port, () => {

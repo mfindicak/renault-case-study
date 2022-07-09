@@ -31,14 +31,17 @@ const userLogin = (req, res) => {
       }
 
       //Logged in successfully. Create JWT Acces and Refresh tokens and send to user.
+      //Access Token will be expired in 15 minutes.
       const accesToken = jwt.sign(
         { user_id: results.rows[0].user_id },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '1d' }
+        { expiresIn: '15m' }
       );
+      //Refresh Token will be expired in 30 days.
       const refreshToken = jwt.sign(
         { user_id: results.rows[0].user_id },
-        process.env.REFRESH_TOKEN_SECRET
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '30d' }
       );
       res
         .status(200)
@@ -53,7 +56,7 @@ const authenticateToken = (req, res, next) => {
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
-    if (error) return res.sendStatus(403);
+    if (error) return res.sendStatus(401);
     pool.query(userQueries.getUserById, [user.user_id], (error, results) => {
       if (error) {
         console.log(error);
@@ -84,8 +87,40 @@ const authRole = (role) => {
   };
 };
 
+const refresh = (req, res) => {
+  const refreshToken = req.body.refreshToken;
+  if (!refreshToken) return res.sendStatus(400);
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    (error, result) => {
+      if (error) return res.sendStatus(401);
+
+      //Refresh token is valid create new pair acces and refresh tokens.
+
+      //Access Token will be expired in 15 minutes.
+      const accesToken = jwt.sign(
+        { user_id: result.user_id },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '15m' }
+      );
+      //Refresh Token will be expired in 30 days.
+      const refreshToken = jwt.sign(
+        { user_id: result.user_id },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '30d' }
+      );
+      res
+        .status(200)
+        .json({ accesToken: accesToken, refreshToken: refreshToken });
+    }
+  );
+};
+
 module.exports = {
   userLogin,
   authenticateToken,
   authRole,
+  refresh,
 };
