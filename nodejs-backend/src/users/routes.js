@@ -1,21 +1,42 @@
 const { Router } = require('express');
 const controller = require('./controller');
+const ROLE = require('./roles');
 
 const router = Router();
 
-//Need: Authentication
+//Show limited informations of all users which undeleted. Need: Authentication
 router.get('/', controller.authenticateToken, controller.getUsers);
 
-//Need: Authentication and Manager Role
-router.get('/:id', controller.getUserById);
+//Show certain user details. Need: Authentication and Manager Role
+router.get(
+  '/:id',
+  controller.authenticateToken,
+  controller.authRole(ROLE.MANAGER),
+  controller.getUserById
+);
 
-//Need: Authentication and Manager Role
-router.post('/', controller.addUser);
+//Add a new user. Need: Authentication and Manager Role
+router.post(
+  '/',
+  controller.authenticateToken,
+  controller.authRole(ROLE.MANAGER),
+  controller.addUser
+);
 
-//Need: Authentication and Manager Role
-router.put('/:id', controller.updateUser);
+//Update the exists user. Need: Authentication and Manager Role
+router.put(
+  '/:id',
+  controller.authenticateToken,
+  controller.authRole(ROLE.MANAGER),
+  controller.updateUser
+);
 
-//Need: Authentication and Manager Role
-router.delete('/:id', controller.deleteUser);
+//Delete the exists user. Need: Authentication and Manager Role
+router.delete(
+  '/:id',
+  controller.authenticateToken,
+  controller.authRole(ROLE.MANAGER),
+  controller.deleteUser
+);
 
 module.exports = router;

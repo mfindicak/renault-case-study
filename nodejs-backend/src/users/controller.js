@@ -54,10 +54,34 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
     if (error) return res.sendStatus(403);
-    console.log(user);
-    req.user = user;
-    next();
+    pool.query(queries.getUserById, [user.user_id], (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.sendStatus(500);
+      }
+      if (results.rowCount == 0) {
+        return res
+          .status(404)
+          .send(
+            'The user could not found on server. Your account might be deleted.'
+          );
+      }
+      req.user = results.rows[0];
+      console.log(req.user);
+      next();
+    });
   });
+};
+
+const authRole = (role) => {
+  return (req, res, next) => {
+    if (!req.user) return res.sendStatus(401);
+    if (req.user.role_id === role.role_id) {
+      next();
+    } else {
+      res.status(403).send('Permission denied.');
+    }
+  };
 };
 
 const getUsers = (req, res) => {
@@ -186,6 +210,7 @@ const deleteUser = (req, res) => {
 module.exports = {
   userLogin,
   authenticateToken,
+  authRole,
   getUsers,
   getUserById,
   addUser,
