@@ -17,7 +17,7 @@ const userLogin = (req, res) => {
     }
 
     if (!results.rows.length) {
-      return res.status(400).send('The username does not exits.');
+      return res.status(400).send('The username does not exists.');
     }
 
     bcrypt.compare(password, results.rows[0].password, (error, result) => {
@@ -27,7 +27,7 @@ const userLogin = (req, res) => {
       }
 
       if (!result) {
-        return res.status(400).send('The password is not correct.');
+        return res.status(401).send('The password is not correct.');
       }
 
       //Logged in successfully. Create JWT Acces and Refresh tokens and send to user.
