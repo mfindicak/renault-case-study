@@ -7,7 +7,7 @@ const authController = require('./src/auth/controller');
 const app = express();
 const port = 3000;
 
-app.use(cors()); //This is need for get request from frontend. Angular uses 4200 port. That library solves CORS issue.
+app.use(cors({ origin: 'http://localhost:4200' })); //This is need for get request from frontend. Angular uses 4200 port. That library solves CORS issue.
 
 app.use(express.json());
 
