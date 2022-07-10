@@ -1,1 +1,40 @@
-<p>login-page works!</p>
+<div
+  fxFlexFill
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  style="background: radial-gradient(#3a77b8, #081933)"
+>
+  <div
+    fxLayout="column"
+    fxLayoutAlign="center"
+    style="padding: 20px; background-color: aqua; border-radius: 10px"
+  >
+    <img
+      fxFlexAlign="center"
+      src="/assets/img/renault_logo_2022.png"
+      alt="Renault 2022 Logo"
+      width="95"
+      height="125"
+    />
+
+    <mat-form-field appearance="outline">
+      <mat-label>Kullanıcı Adı</mat-label>
+      <input #username matInput />
+      <mat-hint></mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Şifre</mat-label>
+      <input #password matInput type="password" />
+      <mat-hint></mat-hint>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSubmit(username.value, password.value)"
+    >
+      Giriş
+    </button>
+  </div>
+  <p>Copyright © 2022</p>
+</div>
