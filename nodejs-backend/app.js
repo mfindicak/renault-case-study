@@ -1,10 +1,13 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const userRoutes = require('./src/users/routes');
 const authController = require('./src/auth/controller');
 
 const app = express();
 const port = 3000;
+
+app.use(cors()); //This is need for get request from frontend. Angular uses 4200 port. That library solves CORS issue.
 
 app.use(express.json());
 
