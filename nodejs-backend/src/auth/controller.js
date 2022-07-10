@@ -43,16 +43,23 @@ const userLogin = (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '30d' }
       );
-      res
-        .status(200)
-        .json({ accesToken: accesToken, refreshToken: refreshToken });
+      res.cookie('accesToken', accesToken, {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        maxAge: 900000, //15 Minutes
+      });
+      res.cookie('refreshToken', refreshToken, {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        maxAge: 2592000000, //30 Days
+      });
+      res.status(200).json({ status: 'ok' });
     });
   });
 };
 
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = req.cookies.accesToken;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
@@ -88,7 +95,7 @@ const authRole = (role) => {
 };
 
 const refresh = (req, res) => {
-  const refreshToken = req.body.refreshToken;
+  const refreshToken = req.cookies.accesToken;
   if (!refreshToken) return res.sendStatus(400);
 
   jwt.verify(
@@ -111,9 +118,17 @@ const refresh = (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '30d' }
       );
-      res
-        .status(200)
-        .json({ accesToken: accesToken, refreshToken: refreshToken });
+      res.cookie('accesToken', accesToken, {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        maxAge: 900000, //15 Minutes
+      });
+      res.cookie('refreshToken', refreshToken, {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        maxAge: 2592000000, //30 Days
+      });
+      res.status(200).json({ status: 'ok' });
     }
   );
 };
