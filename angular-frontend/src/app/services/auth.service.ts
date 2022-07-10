@@ -22,7 +22,7 @@ export class AuthService {
         username: username,
         password: password,
       },
-      { headers: this.headers }
+      { headers: this.headers, withCredentials: true }
     );
   }
 }

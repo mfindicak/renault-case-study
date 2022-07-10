@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -8,16 +8,30 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-  constructor(
-    private userService: UserService,
-    private authService: AuthService
-  ) {}
+  loginForm = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+  });
+
+  getUsername(): string {
+    return this.loginForm.get('username')?.value as string;
+  }
+
+  getPassword(): string {
+    return this.loginForm.get('password')?.value as string;
+  }
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {}
 
-  onSubmit(username: string, password: string): void {
-    this.authService.login(username, password).subscribe((user) => {
-      console.log(user);
+  onSubmit(): void {
+    this.authService.login(this.getUsername(), this.getPassword()).subscribe({
+      next: (result) => {
+        console.log(result);
+      },
+      error: (e) => console.error(e),
+      complete: () => {},
     });
   }
 }

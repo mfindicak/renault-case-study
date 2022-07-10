@@ -4,7 +4,9 @@
   fxLayoutAlign="center center"
   style="background: radial-gradient(#3a77b8, #081933)"
 >
-  <div
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
     fxLayout="column"
     fxLayoutAlign="center"
     style="padding: 20px; background-color: aqua; border-radius: 10px"
@@ -19,22 +21,22 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Kullanıcı Adı</mat-label>
-      <input #username matInput />
-      <mat-hint></mat-hint>
+      <input formControlName="username" matInput type="text" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Şifre</mat-label>
-      <input #password matInput type="password" />
+      <input formControlName="password" matInput type="password" />
       <mat-hint></mat-hint>
     </mat-form-field>
     <button
       mat-raised-button
       color="primary"
-      (click)="onSubmit(username.value, password.value)"
+      type="submit"
+      [disabled]="!loginForm.valid"
     >
       Giriş
     </button>
-  </div>
+  </form>
   <p>Copyright © 2022</p>
 </div>
