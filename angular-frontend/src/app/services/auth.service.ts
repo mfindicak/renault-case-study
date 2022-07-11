@@ -25,4 +25,12 @@ export class AuthService {
       { headers: this.headers, withCredentials: true }
     );
   }
+
+  refreshToken(): Observable<IToken> {
+    return this.http.post<IToken>(
+      this.authApiUrl + '/refresh',
+      {},
+      { headers: this.headers, withCredentials: true }
+    );
+  }
 }
