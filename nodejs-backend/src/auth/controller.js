@@ -95,7 +95,7 @@ const authRole = (role) => {
 };
 
 const refresh = (req, res) => {
-  const refreshToken = req.cookies.accesToken;
+  const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) return res.sendStatus(400);
 
   jwt.verify(
