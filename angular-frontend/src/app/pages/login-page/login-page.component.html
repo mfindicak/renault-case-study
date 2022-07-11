@@ -27,7 +27,6 @@
     <mat-form-field appearance="outline">
       <mat-label>Şifre</mat-label>
       <input formControlName="password" matInput type="password" />
-      <mat-hint></mat-hint>
     </mat-form-field>
     <button
       mat-raised-button
@@ -37,6 +36,12 @@
     >
       Giriş
     </button>
+    <p class="incorrect" fxFlexAlign="center" *ngIf="couldNotFindUser">
+      Kullanıcı bulanamadı.
+    </p>
+    <p class="incorrect" fxFlexAlign="center" *ngIf="incorrectPassword">
+      Şifre hatalı.
+    </p>
   </form>
-  <p>Copyright © 2022</p>
+  <p class="copyright">Copyright © 2022</p>
 </div>

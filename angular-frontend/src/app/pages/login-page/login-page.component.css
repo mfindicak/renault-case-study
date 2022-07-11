@@ -1,7 +1,11 @@
 img {
   margin-bottom: 30px;
 }
-p {
+.copyright {
   color: white;
+  margin-top: 20px;
+}
+.incorrect {
+  color: black;
   margin-top: 20px;
 }
