@@ -11,9 +11,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
+
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
-  declarations: [AppComponent, LoginPageComponent],
+  declarations: [AppComponent, LoginPageComponent, DashboardPageComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -25,7 +28,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
     MatButtonModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

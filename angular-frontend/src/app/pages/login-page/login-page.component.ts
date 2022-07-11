@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -24,7 +26,11 @@ export class LoginPageComponent implements OnInit {
     return this.loginForm.get('password')?.value as string;
   }
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private cookieService: CookieService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -39,7 +45,10 @@ export class LoginPageComponent implements OnInit {
         if (e.status === 400) this.couldNotFindUser = true;
         else if (e.status === 401) this.incorrectPassword = true;
       },
-      complete: () => {},
+      complete: () => {
+        this.cookieService.set('is_user_logged_in', 'true', 30);
+        this.router.navigate(['dashboard']);
+      },
     });
   }
 }
