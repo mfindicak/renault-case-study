@@ -1,1 +1,40 @@
-<p>dashboard-page works!</p>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Renault Sistem</span>
+    <span class="example-spacer"></span>
+    <img
+      fxFlexAlign="center"
+      src="/assets/img/renault_logo_2022_white.png"
+      alt="Renault 2022 Logo"
+      width="30"
+      height="40"
+    />
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel *ngFor="let user of users">
+    <mat-expansion-panel-header>
+      <mat-panel-title> {{ user.name }}</mat-panel-title>
+      <mat-panel-description>
+        {{ user.username }}
+        <mat-icon>account_circle</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field appearance="fill">
+      <mat-label>İsim</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Kullanıcı Adı</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Rol</mat-label>
+      <input matInput />
+    </mat-form-field>
+  </mat-expansion-panel>
+</mat-accordion>

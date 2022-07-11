@@ -11,6 +11,7 @@ import { IUser } from 'src/app/interfaces/user';
   styleUrls: ['./dashboard-page.component.css'],
 })
 export class DashboardPageComponent implements OnInit {
+  users: IUser[] = [];
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -35,7 +36,10 @@ export class DashboardPageComponent implements OnInit {
 
   getUsers(): void {
     this.userService.getUsers().subscribe({
-      next: (users) => console.log(users),
+      next: (users) => {
+        this.users = users;
+        console.log(users);
+      },
       error: (e) => {
         this.tokenErrorHandler(e, () => this.getUsers());
       },
