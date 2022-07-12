@@ -25,7 +25,7 @@ const getUserById = (req, res) => {
       return res.status(404).send("The user id couldn't find.");
     }
 
-    res.status(200).json(results.rows);
+    res.status(200).json(results.rows[0]);
   });
 };
 
