@@ -40,8 +40,8 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(this.getUsername(), this.getPassword()).subscribe({
       next: (result) => {
         this.cookieService.set(
-          'logged_in_user_data',
-          JSON.stringify(result.data),
+          'logged_in_user_id',
+          JSON.stringify(result.data?.user_id),
           30
         );
       },
@@ -50,7 +50,6 @@ export class LoginPageComponent implements OnInit {
         else if (e.status === 401) this.incorrectPassword = true;
       },
       complete: () => {
-        this.cookieService.set('is_user_logged_in', 'true', 30);
         this.router.navigate(['dashboard']);
       },
     });

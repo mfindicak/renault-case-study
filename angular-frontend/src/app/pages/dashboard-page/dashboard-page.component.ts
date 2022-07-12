@@ -17,6 +17,7 @@ export class DashboardPageComponent implements OnInit {
   faClose = faClose;
   faSignOut = faSignOut;
   addButton: boolean = false;
+  selfUserData: IUser = { user_id: -1 };
 
   users: IUser[] = [];
   userDetails: any = {};
@@ -36,8 +37,7 @@ export class DashboardPageComponent implements OnInit {
           callBackFunction();
         },
         error: (e) => {
-          this.cookieService.delete('is_user_logged_in');
-          this.router.navigate(['login']);
+          this.signOut();
         },
       });
     }
@@ -95,16 +95,28 @@ export class DashboardPageComponent implements OnInit {
     return this.userDetails[user_id];
   }
 
+  getSelfUserDetails(): void {
+    const selfUserId = Number(this.cookieService.get('logged_in_user_id'));
+    this.userService.getUserById(selfUserId).subscribe({
+      next: (user) => {
+        this.selfUserData = user;
+        console.log(user);
+      },
+      error: (e) => {
+        this.tokenErrorHandler(e, () => this.getSelfUserDetails());
+      },
+    });
+  }
+
   signOut(): void {
-    this.cookieService.delete('is_user_logged_in');
-    this.cookieService.delete('logged_in_user_data');
+    this.cookieService.delete('logged_in_user_id');
     this.router.navigate(['login']);
   }
 
   ngOnInit(): void {
-    this.getUsers();
+    this.getSelfUserDetails();
 
-    this.getUserById(1);
+    this.getUsers();
 
     // this.addUser({
     //   username: 'user4',

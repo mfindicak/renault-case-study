@@ -14,13 +14,17 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div fxLayoutAlign="end">
-  <div class="add-button" (click)="this.addButton = !this.addButton">
-    <fa-icon
-      [icon]="addButton ? faClose : faPlus"
-      size="lg"
-      style="color: white"
-    ></fa-icon>
+<div id="info">
+  <span id="name">{{ selfUserData.name }}</span>
+  <span class="example-spacer"></span>
+  <div fxLayoutAlign="end">
+    <div class="add-button" (click)="this.addButton = !this.addButton">
+      <fa-icon
+        [icon]="addButton ? faClose : faPlus"
+        size="lg"
+        style="color: white"
+      ></fa-icon>
+    </div>
   </div>
 </div>
 

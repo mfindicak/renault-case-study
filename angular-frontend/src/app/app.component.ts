@@ -12,7 +12,7 @@ export class AppComponent {
   title = 'Renault Sistem';
   isLoggedIn: string = '';
   constructor(private router: Router, private cookieService: CookieService) {
-    this.isLoggedIn = this.cookieService.get('is_user_logged_in');
+    this.isLoggedIn = this.cookieService.get('logged_in_user_id');
     if (this.isLoggedIn) {
       this.router.navigate(['dashboard']);
     } else {
