@@ -19,11 +19,15 @@
     <span id="name">{{ selfUserData.name }}</span>
   </div>
   <div fxFlex="33.33" fxLayoutAlign="center">
-    <span id="role">{{ selfRole }}</span>
+    <span id="role">{{ selfRole?.role_name }}</span>
   </div>
 
   <div fxFlex="33.33" fxLayoutAlign="end">
-    <div class="add-button" (click)="this.addButton = !this.addButton">
+    <div
+      class="add-button"
+      (click)="this.addButton = !this.addButton"
+      *ngIf="isManager"
+    >
       <fa-icon
         [icon]="addButton ? faClose : faPlus"
         size="lg"
@@ -104,7 +108,7 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="update-delete">
+    <div class="update-delete" *ngIf="isManager">
       <button
         mat-raised-button
         color="primary"

@@ -22,7 +22,8 @@ export class DashboardPageComponent implements OnInit {
   addButton: boolean = false;
   selfUserData: IUser = { user_id: -1 };
   roles: IRole[] = [];
-  selfRole: string = '';
+  selfRole: IRole | null = null;
+  isManager: boolean = false;
 
   users: IUser[] = [];
   userDetails: any = {};
@@ -149,7 +150,8 @@ export class DashboardPageComponent implements OnInit {
         this.roles = roles;
         roles.forEach((element) => {
           if (element.role_id == this.selfUserData.role_id) {
-            this.selfRole = element.role_name;
+            this.selfRole = element;
+            this.isManager = element.role_id == 2 ? true : false;
           }
         });
       },
