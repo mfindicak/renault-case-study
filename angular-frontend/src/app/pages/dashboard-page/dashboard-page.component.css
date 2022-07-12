@@ -37,3 +37,15 @@
   justify-content: center;
   border-radius: 20px;
 }
+
+.title {
+  margin-left: 20px;
+}
+
+#logo {
+  margin-left: 5px;
+}
+
+#sign-out {
+  margin-right: 15px;
+}

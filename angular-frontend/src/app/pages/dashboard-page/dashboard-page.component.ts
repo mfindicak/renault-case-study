@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { IUser } from 'src/app/interfaces/user';
-import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faClose, faSignOut } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -12,8 +12,10 @@ import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./dashboard-page.component.css'],
 })
 export class DashboardPageComponent implements OnInit {
+  title: string = 'Renault Sistem';
   faPlus = faPlus;
   faClose = faClose;
+  faSignOut = faSignOut;
   addButton: boolean = false;
 
   users: IUser[] = [];
@@ -89,8 +91,14 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
-  getDetail(user_id: number) {
+  getDetail(user_id: number): IUser {
     return this.userDetails[user_id];
+  }
+
+  signOut(): void {
+    this.cookieService.delete('is_user_logged_in');
+    this.cookieService.delete('logged_in_user_data');
+    this.router.navigate(['login']);
   }
 
   ngOnInit(): void {

@@ -1,14 +1,16 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Renault Sistem</span>
-    <span class="example-spacer"></span>
     <img
-      fxFlexAlign="center"
+      id="logo"
       src="/assets/img/renault_logo_2022_white.png"
       alt="Renault 2022 Logo"
       width="30"
       height="40"
     />
+    <span class="title">{{ title }}</span>
+    <span class="example-spacer"></span>
+
+    <fa-icon [icon]="faSignOut" id="sign-out" (click)="signOut()"></fa-icon>
   </mat-toolbar-row>
 </mat-toolbar>
 
