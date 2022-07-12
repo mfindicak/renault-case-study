@@ -1,5 +1,5 @@
 const getUsers =
-  'SELECT user_id, username, name FROM users WHERE is_deleted = false';
+  'SELECT user_id, username, name FROM users WHERE is_deleted = false ORDER By user_id';
 
 const getUserById =
   'SELECT user_id, username, name, role_id, created_at, updated_at FROM users WHERE is_deleted = false AND user_id = $1';
