@@ -12,8 +12,21 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
+<div fxLayoutAlign="end">
+  <div class="add-button" (click)="this.addButton = !this.addButton">
+    <fa-icon
+      [icon]="addButton ? faClose : faPlus"
+      size="lg"
+      style="color: white"
+    ></fa-icon>
+  </div>
+</div>
+
 <mat-accordion class="example-headers-align" multi>
-  <mat-expansion-panel *ngFor="let user of users">
+  <mat-expansion-panel
+    *ngFor="let user of users"
+    (opened)="getUserById(user.user_id)"
+  >
     <mat-expansion-panel-header>
       <mat-panel-title> {{ user.name }}</mat-panel-title>
       <mat-panel-description>
@@ -22,19 +35,59 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-form-field appearance="fill">
-      <mat-label>İsim</mat-label>
-      <input matInput />
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <div class="user-info">
+        <p>Id:</p>
+        <mat-form-field appearance="outline">
+          <input matInput [value]="user.user_id" disabled />
+        </mat-form-field>
+      </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Kullanıcı Adı</mat-label>
-      <input matInput />
-    </mat-form-field>
+      <div class="user-info">
+        <p>İsim:</p>
+        <mat-form-field appearance="outline">
+          <input matInput [value]="user.name" />
+        </mat-form-field>
+      </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Rol</mat-label>
-      <input matInput />
-    </mat-form-field>
+      <div class="user-info">
+        <p>Kullanıcı Adı:</p>
+        <mat-form-field appearance="outline">
+          <input matInput [value]="user.username" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-around center"
+      *ngIf="getDetail(user.user_id)"
+    >
+      <div class="user-info">
+        <p>Rol:</p>
+        <mat-form-field appearance="outline">
+          <input matInput [value]="getDetail(user.user_id).role_id" />
+        </mat-form-field>
+      </div>
+
+      <div class="user-info">
+        <p>Oluşturma Tarihi:</p>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            [value]="getDetail(user.user_id).created_at"
+            disabled
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="user-info">
+        <p>Son Değiştirme Tarihi:</p>
+        <mat-form-field appearance="outline">
+          <input matInput [value]="getDetail(user.user_id).updated_at" disabled=
+          />
+        </mat-form-field>
+      </div>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>

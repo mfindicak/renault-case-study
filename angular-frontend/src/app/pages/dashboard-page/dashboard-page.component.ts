@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { IUser } from 'src/app/interfaces/user';
+import { faPlus, faClose } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -11,7 +12,13 @@ import { IUser } from 'src/app/interfaces/user';
   styleUrls: ['./dashboard-page.component.css'],
 })
 export class DashboardPageComponent implements OnInit {
+  faPlus = faPlus;
+  faClose = faClose;
+  addButton: boolean = false;
+
   users: IUser[] = [];
+  userDetails: any = {};
+
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -48,7 +55,7 @@ export class DashboardPageComponent implements OnInit {
 
   getUserById(user_id: number): void {
     this.userService.getUserById(user_id).subscribe({
-      next: (users) => console.log(users),
+      next: (user) => (this.userDetails[user_id] = user[0]),
       error: (e) => {
         this.tokenErrorHandler(e, () => this.getUserById(user_id));
       },
@@ -80,6 +87,10 @@ export class DashboardPageComponent implements OnInit {
         this.tokenErrorHandler(e, () => this.deleteUser(user_id));
       },
     });
+  }
+
+  getDetail(user_id: number) {
+    return this.userDetails[user_id];
   }
 
   ngOnInit(): void {

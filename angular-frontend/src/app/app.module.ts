@@ -17,6 +17,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
 
 import { CookieService } from 'ngx-cookie-service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [AppComponent, LoginPageComponent, DashboardPageComponent],
@@ -33,6 +34,7 @@ import { CookieService } from 'ngx-cookie-service';
     MatToolbarModule,
     MatExpansionModule,
     MatIconModule,
+    FontAwesomeModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

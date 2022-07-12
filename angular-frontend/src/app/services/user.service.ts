@@ -22,8 +22,8 @@ export class UserService {
     });
   }
 
-  getUserById(user_id: number): Observable<IUser> {
-    return this.http.get<IUser>(this.userApiUrl + '/' + user_id, {
+  getUserById(user_id: number): Observable<IUser[]> {
+    return this.http.get<IUser[]>(this.userApiUrl + '/' + user_id, {
       headers: this.headers,
       withCredentials: true,
     });
