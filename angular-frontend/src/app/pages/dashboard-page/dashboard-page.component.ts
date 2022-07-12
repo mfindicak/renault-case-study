@@ -110,6 +110,7 @@ export class DashboardPageComponent implements OnInit {
       error: (e) => {
         this.tokenErrorHandler(e, () => this.getSelfUserDetails());
       },
+      complete: () => this.getRoles(),
     });
   }
 
@@ -135,8 +136,6 @@ export class DashboardPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSelfUserDetails();
-
-    this.getRoles();
 
     this.getUsers();
 

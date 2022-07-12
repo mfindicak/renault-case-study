@@ -14,11 +14,15 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div id="info">
-  <span id="name">{{ selfRole }}</span>
-  <span id="name">{{ selfUserData.name }}</span>
-  <span class="example-spacer"></span>
-  <div fxLayoutAlign="end">
+<div class="info" fxLayoutAlign="center center">
+  <div fxFlex="33.33">
+    <span id="name">{{ selfUserData.name }}</span>
+  </div>
+  <div fxFlex="33.33" fxLayoutAlign="center">
+    <span id="role">{{ selfRole }}</span>
+  </div>
+
+  <div fxFlex="33.33" fxLayoutAlign="end">
     <div class="add-button" (click)="this.addButton = !this.addButton">
       <fa-icon
         [icon]="addButton ? faClose : faPlus"
@@ -73,7 +77,11 @@
       <div class="user-info">
         <p>Rol:</p>
         <mat-form-field appearance="outline">
-          <input matInput [value]="getDetail(user.user_id).role_id" />
+          <mat-select [value]="getDetail(user.user_id).role_id">
+            <mat-option [value]="role.role_id" *ngFor="let role of roles">{{
+              role.role_name
+            }}</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
 

@@ -30,7 +30,6 @@
 .add-button {
   width: 40px;
   height: 40px;
-  margin: 20px;
   background-color: #613cb0;
   display: flex;
   align-items: center;
@@ -54,11 +53,16 @@
   font-size: 20px;
   font-weight: 500;
   color: #613cb0;
+}
+
+#role {
+  font-size: 20px;
+  font-weight: 500;
+  color: #613cb0;
   margin-left: 20px;
 }
 
-#info {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.info {
+  padding-inline: 22px;
+  padding-block: 15px;
 }
