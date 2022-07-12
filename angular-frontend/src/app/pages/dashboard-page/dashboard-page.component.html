@@ -46,25 +46,25 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <div fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxLayout="row">
       <div class="user-info">
         <p>Id:</p>
         <mat-form-field appearance="outline">
-          <input matInput [value]="user.user_id" disabled />
+          <input #inputId matInput [value]="user.user_id" disabled />
         </mat-form-field>
       </div>
 
       <div class="user-info">
         <p>İsim:</p>
         <mat-form-field appearance="outline">
-          <input matInput [value]="user.name" />
+          <input #inputName matInput [value]="user.name" />
         </mat-form-field>
       </div>
 
       <div class="user-info">
         <p>Kullanıcı Adı:</p>
         <mat-form-field appearance="outline">
-          <input matInput [value]="user.username" />
+          <input #inputUsername matInput [value]="user.username" />
         </mat-form-field>
       </div>
     </div>
@@ -103,6 +103,24 @@
           />
         </mat-form-field>
       </div>
+    </div>
+    <div class="update-delete">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="
+          updateUser(inputId.value, inputUsername.value, inputName.value)
+        "
+      >
+        Güncelle
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="deleteUser(inputId.value)"
+      >
+        Sil
+      </button>
     </div>
   </mat-expansion-panel>
 </mat-accordion>

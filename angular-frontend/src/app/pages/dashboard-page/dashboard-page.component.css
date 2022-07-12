@@ -20,6 +20,7 @@
   flex-direction: row;
   display: flex;
   align-items: center;
+  width: 33.33%;
 }
 
 .user-info p {
@@ -65,4 +66,14 @@
 .info {
   padding-inline: 22px;
   padding-block: 15px;
+}
+
+.update-delete {
+  display: flex;
+  justify-content: end;
+}
+
+.update-delete button {
+  margin-inline: 10px;
+  margin-block: 5px;
 }

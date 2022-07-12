@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { IUser } from 'src/app/interfaces/user';
 import { faPlus, faClose, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { IRole } from 'src/app/interfaces/role';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -31,8 +32,13 @@ export class DashboardPageComponent implements OnInit {
     private userService: UserService,
     private roleService: RoleService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {}
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
 
   //This functions helps to renew accesToken with refreshToken and then run function again.
   tokenErrorHandler(error: any, callBackFunction: Function): void {
@@ -78,18 +84,40 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
-  updateUser(user_id: number, userObject: IUser): void {
-    this.userService.updateUser(user_id, userObject).subscribe({
-      next: (users) => console.log(users),
+  updateUser(
+    user_id: string,
+    username?: string,
+    name?: string,
+    role_id?: number
+  ): void {
+    const userObject = {
+      user_id: Number(user_id),
+      username: username,
+      name: name,
+      role_id: role_id,
+    };
+    this.userService.updateUser(userObject).subscribe({
+      next: () => {
+        this.getUsers();
+        this.openSnackBar(
+          'Kullanıcı verileri başarıyla değiştirildi.',
+          'Kapat'
+        );
+      },
       error: (e) => {
-        this.tokenErrorHandler(e, () => this.updateUser(user_id, userObject));
+        this.tokenErrorHandler(e, () =>
+          this.updateUser(user_id, username, name, role_id)
+        );
       },
     });
   }
 
-  deleteUser(user_id: number): void {
-    this.userService.deleteUser(user_id).subscribe({
-      next: (users) => console.log(users),
+  deleteUser(user_id: string): void {
+    this.userService.deleteUser(Number(user_id)).subscribe({
+      next: () => {
+        this.getUsers();
+        this.openSnackBar('Kullanıcı başarıyla silindi.', 'Kapat');
+      },
       error: (e) => {
         this.tokenErrorHandler(e, () => this.deleteUser(user_id));
       },
@@ -147,7 +175,5 @@ export class DashboardPageComponent implements OnInit {
     // });
 
     // this.deleteUser(5);
-
-    // this.updateUser(2, { username: 'updateTest' });
   }
 }

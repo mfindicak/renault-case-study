@@ -36,16 +36,20 @@ export class UserService {
     });
   }
 
-  updateUser(user_id: number, userObject: IUser): Observable<any> {
-    return this.http.put<any>(this.userApiUrl + '/' + user_id, userObject, {
-      headers: this.headers,
-      withCredentials: true,
-    });
+  updateUser(userObject: IUser): Observable<any> {
+    return this.http.put(
+      this.userApiUrl + '/' + userObject.user_id,
+      userObject,
+      {
+        responseType: 'text', //PUT request is only returning status code. This is need for it if we don't wanna get error.
+        withCredentials: true, //This is for send our accestoken via cookie.
+      }
+    );
   }
 
-  deleteUser(user_id: number): Observable<IUser[]> {
-    return this.http.delete<IUser[]>(this.userApiUrl + '/' + user_id, {
-      headers: this.headers,
+  deleteUser(user_id: number): Observable<any> {
+    return this.http.delete(this.userApiUrl + '/' + user_id, {
+      responseType: 'text',
       withCredentials: true,
     });
   }
