@@ -2,8 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const userRoutes = require('./src/users/routes');
 const authController = require('./src/auth/controller');
+const userRoutes = require('./src/users/routes');
+const roleRoutes = require('./src/roles/routes');
 
 const app = express();
 const port = 3000;
@@ -23,6 +24,8 @@ app.post('/login', authController.userLogin);
 app.post('/refresh', authController.refresh);
 
 app.use('/users', userRoutes);
+
+app.use('/roles', roleRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
