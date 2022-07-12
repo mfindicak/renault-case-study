@@ -88,10 +88,16 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-const authRole = (role) => {
+const authRole = (role, self = false) => {
   return (req, res, next) => {
+    const id = parseInt(req.params.id);
+    let getOwnData = false;
+    //This if statement is for normal users to reach their own user data.
+    if (self && id) {
+      getOwnData = req.user.user_id === id ? true : false;
+    }
     if (!req.user) return res.sendStatus(401);
-    if (req.user.role_id === role.role_id) {
+    if (req.user.role_id === role.role_id || getOwnData) {
       next();
     } else {
       res.status(403).send('Permission denied.');

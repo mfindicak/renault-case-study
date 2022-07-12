@@ -9,10 +9,11 @@ const router = Router();
 router.get('/', authController.authenticateToken, userController.getUsers);
 
 //Show certain user details. Need: Authentication and Manager Role
+//If you are not manager you can only reach details of your own.
 router.get(
   '/:id',
   authController.authenticateToken,
-  authController.authRole(ROLE.MANAGER),
+  authController.authRole(ROLE.MANAGER, true),
   userController.getUserById
 );
 
