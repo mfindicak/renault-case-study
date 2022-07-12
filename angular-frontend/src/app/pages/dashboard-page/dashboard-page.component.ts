@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { RoleService } from 'src/app/services/role.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { IUser } from 'src/app/interfaces/user';
 import { faPlus, faClose, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { IRole } from 'src/app/interfaces/role';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -18,6 +20,8 @@ export class DashboardPageComponent implements OnInit {
   faSignOut = faSignOut;
   addButton: boolean = false;
   selfUserData: IUser = { user_id: -1 };
+  roles: IRole[] = [];
+  selfRole: string = '';
 
   users: IUser[] = [];
   userDetails: any = {};
@@ -25,6 +29,7 @@ export class DashboardPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private roleService: RoleService,
     private cookieService: CookieService,
     private router: Router
   ) {}
@@ -108,6 +113,21 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
+  getRoles(): void {
+    this.roleService.getRoles().subscribe({
+      next: (roles) => {
+        console.log(roles);
+        this.roles = roles;
+        roles.forEach((element) => {
+          if (element.role_id == this.selfUserData.role_id) {
+            this.selfRole = element.role_name;
+          }
+        });
+      },
+      error: (e) => this.tokenErrorHandler(e, () => this.getRoles()),
+    });
+  }
+
   signOut(): void {
     this.cookieService.delete('logged_in_user_id');
     this.router.navigate(['login']);
@@ -115,6 +135,8 @@ export class DashboardPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSelfUserDetails();
+
+    this.getRoles();
 
     this.getUsers();
 
