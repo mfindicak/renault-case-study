@@ -55,7 +55,7 @@ export class DashboardPageComponent implements OnInit {
 
   getUserById(user_id: number): void {
     this.userService.getUserById(user_id).subscribe({
-      next: (user) => (this.userDetails[user_id] = user[0]),
+      next: (user) => (this.userDetails[user_id] = user),
       error: (e) => {
         this.tokenErrorHandler(e, () => this.getUserById(user_id));
       },

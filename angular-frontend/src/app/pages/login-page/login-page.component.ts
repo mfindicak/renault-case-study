@@ -39,7 +39,11 @@ export class LoginPageComponent implements OnInit {
     this.couldNotFindUser = false;
     this.authService.login(this.getUsername(), this.getPassword()).subscribe({
       next: (result) => {
-        console.log(result);
+        this.cookieService.set(
+          'logged_in_user_data',
+          JSON.stringify(result.data),
+          30
+        );
       },
       error: (e) => {
         if (e.status === 400) this.couldNotFindUser = true;

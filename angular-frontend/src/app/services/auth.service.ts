@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IToken } from '../interfaces/token';
+import { IAuth } from '../interfaces/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +15,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<IToken> {
-    return this.http.post<IToken>(
+  login(username: string, password: string): Observable<IAuth> {
+    return this.http.post<IAuth>(
       this.authApiUrl + '/login',
       {
         username: username,
@@ -26,8 +26,8 @@ export class AuthService {
     );
   }
 
-  refreshToken(): Observable<IToken> {
-    return this.http.post<IToken>(
+  refreshToken(): Observable<IAuth> {
+    return this.http.post<IAuth>(
       this.authApiUrl + '/refresh',
       {},
       { headers: this.headers, withCredentials: true }
