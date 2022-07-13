@@ -1,0 +1,37 @@
+//All passwords equals to 'renault'.
+
+create database dbusers;
+\c dbusers
+
+CREATE TABLE roles (
+	role_id serial primary key,
+	role_name           varchar(50)    NOT NULL
+);
+
+INSERT INTO roles (role_name)
+VALUES ('Kullanıcı'), ('Yönetici');
+
+CREATE TABLE users (
+	user_id serial primary key,
+	username           varchar(50) unique    NOT NULL,
+	password           char(60)    NOT NULL,
+	name           varchar(255)    NOT NULL,
+	role_id INT NOT NULL,
+	created_at timestamp DEFAULT NOW(),
+	updated_at timestamp DEFAULT NOW(),
+	deleted_at timestamp,
+	is_deleted BOOLEAN DEFAULT FALSE,
+	CONSTRAINT fk_roles FOREIGN KEY(role_id) REFERENCES roles(role_id)
+);
+
+
+INSERT INTO users (username, password, name,role_id)
+VALUES 
+('melihilter', '$2b$10$WMLiB8rzAfIaNDQ80z./humM5VhjeSUS.LSHMEId04tRsBy0dSnQO', 'Melih İLTER',2),
+('ahmetbilgilioglu', '$2b$10$cZouEE45CwMP6vMRUGc8suWs2ZDmraR5tDfeodkTBPcc3OWUXZ9nu', 'Ahmet BİLGİLİOĞLU',2),
+('berkcanbesikci', '$2b$10$FX8X.QHzAx40TkllFaQacesH76dZF4eCRymwYO8ce/OPy7S4dQsFy', 'Berkcan BEŞİKÇİ',2),
+('mertfindicak', '$2b$10$3uLzyKr8aMUtITdFA7NZ4emPyfuFRyZHZDCqAo5CVRrvl26d3zeD6', 'Mert Şen Fındıcak',2),
+('demoadmin', '$2b$10$RjXYeW/bX.VVYvS/qywHbePbghuNEosH9wEfXzzagt8umfl9dt6Om', 'Demo Yönetici Hesabı',2),
+('demouser', '$2b$10$MMexM2cep0xNCN887Xzl.ud8LEuWhMmSw5xz6qQI0F1YWcVrlr45S', 'Demo Kullanıcı Hesabı',1);
+
+select * from users;
