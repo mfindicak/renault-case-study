@@ -20,7 +20,6 @@
   flex-direction: row;
   display: flex;
   align-items: center;
-  width: 33.33%;
 }
 
 .user-info p {
@@ -76,4 +75,12 @@
 .update-delete button {
   margin-inline: 10px;
   margin-block: 5px;
+}
+
+.user-info .mat-label {
+  font-size: large;
+}
+
+.user-info .mat-form-field {
+  width: 300px;
 }
