@@ -34,12 +34,12 @@ const userLogin = (req, res) => {
 
       delete user.password; //user object will send with json. We don't wanna add password to json even if encrypted.
 
-      //Logged in successfully. Create JWT Acces and Refresh tokens and send to user.
-      //Access Token will be expired in 15 minutes.
-      const accesToken = jwt.sign(
+      //Logged in successfully. Create JWT Access and Refresh tokens and send to user.
+      //Access Token will be expired in 1day.
+      const accessToken = jwt.sign(
         { user_id: user.user_id },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '15m' }
+        { expiresIn: '1d' }
       );
       //Refresh Token will be expired in 30 days.
       const refreshToken = jwt.sign(
@@ -47,10 +47,10 @@ const userLogin = (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '30d' }
       );
-      res.cookie('acces_token', accesToken, {
+      res.cookie('access_token', accessToken, {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        maxAge: 900000, //15 Minutes
+        maxAge: 86400000, //1 Day
       });
       res.cookie('refresh_token', refreshToken, {
         secure: process.env.NODE_ENV === 'production',
@@ -64,7 +64,7 @@ const userLogin = (req, res) => {
 };
 
 const authenticateToken = (req, res, next) => {
-  const token = req.cookies.acces_token;
+  const token = req.cookies.access_token;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
@@ -117,16 +117,16 @@ const refresh = (req, res) => {
 
       //Refresh token is valid now create new access token.
 
-      //Access Token will be expired in 15 minutes.
-      const accesToken = jwt.sign(
+      //Access Token will be expired in 1 day.
+      const accessToken = jwt.sign(
         { user_id: result.user_id },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '15m' }
+        { expiresIn: '1d' }
       );
-      res.cookie('acces_token', accesToken, {
+      res.cookie('access_token', accessToken, {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        maxAge: 900000, //15 Minutes
+        maxAge: 86400000, //1 Day
       });
       res.status(200).json({ status: 'ok' });
     }
