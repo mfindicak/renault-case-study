@@ -130,6 +130,7 @@
             this.userDetails[user.user_id].role_id
           )
         "
+        [disabled]="inputUsername.value === '' || inputName.value === ''"
       >
         Güncelle
       </button>
