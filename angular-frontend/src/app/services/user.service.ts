@@ -30,6 +30,7 @@ export class UserService {
   }
 
   addUser(userObject: object): Observable<any> {
+    //This endpoint only returns statuscode. We don't need to get any json object.
     return this.http.post(this.userApiUrl, userObject, {
       responseType: 'text',
       withCredentials: true,
@@ -37,6 +38,7 @@ export class UserService {
   }
 
   updateUser(userObject: IUser): Observable<any> {
+    //This endpoint only returns statuscode. We don't need to get any json object.
     return this.http.put(
       this.userApiUrl + '/' + userObject.user_id,
       userObject,
@@ -48,6 +50,7 @@ export class UserService {
   }
 
   deleteUser(user_id: number): Observable<any> {
+    //This endpoint only returns statuscode. We don't need to get any json object.
     return this.http.delete(this.userApiUrl + '/' + user_id, {
       responseType: 'text',
       withCredentials: true,
