@@ -114,10 +114,6 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
-  getDetail(user_id: number): IUser {
-    return this.userDetails[user_id];
-  }
-
   getSelfUserDetails(): void {
     const selfUserId = Number(this.cookieService.get('logged_in_user_id'));
     this.userService.getUserById(selfUserId).subscribe({

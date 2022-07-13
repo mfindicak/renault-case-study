@@ -59,6 +59,7 @@
             matInput
             [value]="user.name"
             [disabled]="!isManager"
+            required
           />
         </mat-form-field>
       </div>
@@ -71,6 +72,7 @@
             matInput
             [value]="user.username"
             [disabled]="!isManager"
+            required
           />
         </mat-form-field>
       </div>
@@ -79,12 +81,12 @@
     <div
       fxLayout="row wrap"
       fxLayoutAlign="space-around center"
-      *ngIf="getDetail(user.user_id)"
+      *ngIf="this.userDetails[user.user_id]"
     >
       <div class="user-info">
         <mat-form-field appearance="outline">
           <mat-label> Rol </mat-label>
-          <mat-select [value]="getDetail(user.user_id).role_id">
+          <mat-select [(value)]="this.userDetails[user.user_id].role_id">
             <mat-option [value]="role.role_id" *ngFor="let role of roles">{{
               role.role_name
             }}</mat-option>
@@ -97,7 +99,7 @@
           <mat-label> Oluşturma Tarihi </mat-label>
           <input
             matInput
-            [value]="getDetail(user.user_id).created_at"
+            [value]="this.userDetails[user.user_id].created_at"
             disabled
           />
         </mat-form-field>
@@ -106,8 +108,8 @@
       <div class="user-info">
         <mat-form-field appearance="outline">
           <mat-label> Son Değiştirme Tarihi </mat-label>
-          <input matInput [value]="getDetail(user.user_id).updated_at" disabled=
-          />
+          <input matInput [value]="this.userDetails[user.user_id].updated_at"
+          disabled= />
         </mat-form-field>
       </div>
     </div>
@@ -117,7 +119,12 @@
         mat-raised-button
         color="primary"
         (click)="
-          updateUser(inputId.value, inputUsername.value, inputName.value)
+          updateUser(
+            inputId.value,
+            inputUsername.value,
+            inputName.value,
+            this.userDetails[user.user_id].role_id
+          )
         "
       >
         Güncelle
