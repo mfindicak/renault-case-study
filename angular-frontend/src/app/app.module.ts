@@ -13,6 +13,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
@@ -20,9 +21,10 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 
 import { CookieService } from 'ngx-cookie-service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AddUserModalComponent } from './components/add-user-modal/add-user-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginPageComponent, DashboardPageComponent],
+  declarations: [AppComponent, LoginPageComponent, DashboardPageComponent, AddUserModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -39,6 +41,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatSelectModule,
     MatSnackBarModule,
     FontAwesomeModule,
+    MatDialogModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

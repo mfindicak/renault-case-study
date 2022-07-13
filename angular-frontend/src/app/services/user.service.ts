@@ -29,9 +29,9 @@ export class UserService {
     });
   }
 
-  addUser(userObject: IUser): Observable<any> {
-    return this.http.post<any>(this.userApiUrl, userObject, {
-      headers: this.headers,
+  addUser(userObject: object): Observable<any> {
+    return this.http.post(this.userApiUrl, userObject, {
+      responseType: 'text',
       withCredentials: true,
     });
   }

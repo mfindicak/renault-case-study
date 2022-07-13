@@ -1,0 +1,47 @@
+<form [formGroup]="loginForm" (ngSubmit)="addUser()">
+  <div fxLayoutAlign="center" id="logo">
+    <img
+      src="/assets/img/renault_logo_2022.png"
+      alt="Renault 2022 Logo"
+      width="50"
+      height="65"
+    />
+  </div>
+  <mat-form-field appearance="outline" fxFill>
+    <mat-label>Kullanıcı Adı</mat-label>
+    <input formControlName="username" matInput required type="text" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fxFill>
+    <mat-label>Şifre</mat-label>
+    <input formControlName="password" matInput required type="password" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fxFill>
+    <mat-label>İsim</mat-label>
+    <input formControlName="name" matInput required type="text" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fxFill>
+    <mat-label>Rol</mat-label>
+    <mat-select formControlName="role_id">
+      <mat-option [value]="role.role_id" *ngFor="let role of roles">{{
+        role.role_name
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    fxFill
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!loginForm.valid"
+  >
+    Kaydet
+  </button>
+
+  <button fxFill mat-flat-button (click)="this.dialogRef.close()" type="button">
+    İptal
+  </button>
+</form>

@@ -5,9 +5,11 @@ import { RoleService } from 'src/app/services/role.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { IUser } from 'src/app/interfaces/user';
-import { faPlus, faClose, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { IRole } from 'src/app/interfaces/role';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { AddUserModalComponent } from 'src/app/components/add-user-modal/add-user-modal.component';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -17,9 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DashboardPageComponent implements OnInit {
   title: string = 'Renault Sistem';
   faPlus = faPlus;
-  faClose = faClose;
   faSignOut = faSignOut;
-  addButton: boolean = false;
   selfUserData: IUser = { user_id: -1 };
   roles: IRole[] = [];
   selfRole: IRole | null = null;
@@ -34,11 +34,12 @@ export class DashboardPageComponent implements OnInit {
     private roleService: RoleService,
     private cookieService: CookieService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action);
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Kapat');
   }
 
   //This functions helps to renew accesToken with refreshToken and then run function again.
@@ -76,15 +77,6 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
-  addUser(userObject: IUser): void {
-    this.userService.addUser(userObject).subscribe({
-      next: (users) => console.log(users),
-      error: (e) => {
-        this.tokenErrorHandler(e, () => this.addUser(userObject));
-      },
-    });
-  }
-
   updateUser(
     user_id: string,
     username?: string,
@@ -100,10 +92,7 @@ export class DashboardPageComponent implements OnInit {
     this.userService.updateUser(userObject).subscribe({
       next: () => {
         this.getUsers();
-        this.openSnackBar(
-          'Kullanıcı verileri başarıyla değiştirildi.',
-          'Kapat'
-        );
+        this.openSnackBar('Kullanıcı verileri başarıyla değiştirildi.');
       },
       error: (e) => {
         this.tokenErrorHandler(e, () =>
@@ -117,7 +106,7 @@ export class DashboardPageComponent implements OnInit {
     this.userService.deleteUser(Number(user_id)).subscribe({
       next: () => {
         this.getUsers();
-        this.openSnackBar('Kullanıcı başarıyla silindi.', 'Kapat');
+        this.openSnackBar('Kullanıcı başarıyla silindi.');
       },
       error: (e) => {
         this.tokenErrorHandler(e, () => this.deleteUser(user_id));
@@ -164,6 +153,25 @@ export class DashboardPageComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AddUserModalComponent, {
+      width: '250px',
+      data: this.roles,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      switch (result.status) {
+        case 201:
+          this.openSnackBar('Yeni kullanıcı başarıyla oluşturuldu.');
+          this.getUsers();
+          break;
+        case 400 || 500:
+          this.openSnackBar('Bu kullanıcı zaten kayıtlı.');
+          break;
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.getSelfUserDetails();
 
@@ -175,7 +183,5 @@ export class DashboardPageComponent implements OnInit {
     //   name: 'Test',
     //   role_id: 1,
     // });
-
-    // this.deleteUser(5);
   }
 }
